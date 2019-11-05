@@ -1,12 +1,6 @@
-const express = require('express');
+const router = require('express').Router();
 
 const db = require('../data/dbConfig');
-
-//import middleware
-const validateId = require('../middleware/validateId');
-const validateAccount = require('../middleware/validateAccount');
-
-const router = express.Router();
 
 //get all the accounts
 router.get('/', (req, res) => {
@@ -34,7 +28,7 @@ router.get('/:id', (req, res) => {
   });
 
   // post an account
-  router.post('/', validateAccount, (req, res) => {
+  router.post('/',  (req, res) => {
     if (accountIsValid(req.body)) {
       db('accounts')
         .insert(req.body, 'id')
@@ -59,7 +53,7 @@ router.get('/:id', (req, res) => {
   
 
   // update account by id
-  router.put('/:id', validateId, validateAccount, (req, res) => {
+  router.put('/:id', (req, res) => {
     db('accounts')
       .where({ id: req.params.id })
       .update(req.body)
@@ -76,7 +70,7 @@ router.get('/:id', (req, res) => {
   });
   
   // delete account by id
-  router.delete('/:id', validateId, (req, res) => {
+  router.delete('/:id', (req, res) => {
     db('accounts')
       .where({ id: req.params.id })
       .del()
